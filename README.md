@@ -1,4 +1,4 @@
-# Overclocked-Swerve
+# OverclockedSwerve
 A clean version of our swerve drive code designed to be easily integrated into a new project.
 
 ## Installation
@@ -21,7 +21,7 @@ On OS X, the easiest way is to [install Homebrew](http://brew.sh), open up a ter
 ## Usage
 
 ### Running Ant from the Terminal (Mac) or Command Line (Windows)
-Open the terminal (command line on Windows) and `cd` to the root directory of the project (where `build.xml` is located), in this case the `Overclocked-Swerve/OverclockedSwerve` folder. All Ant commands are of the form `ant [target]` and run in the root directory of the project. Run `ant -p` to see a description of available targets:
+Open the terminal (command line on Windows) and `cd` to the root directory of the project (where `build.xml` is located), in this case the `OverclockedSwerve` folder. All Ant commands are of the form `ant [target]` and run in the root directory of the project. Run `ant -p` to see a description of available targets:
 ```
 OverclockedSwerve$ ant -p
 Buildfile: [...]/OverclockedSwerve/build.xml
@@ -42,7 +42,7 @@ Each "target" is a subcommand you can run. For example `ant deploy` deploys the 
 
   1. First make sure you have no Ant Build configurations already set (you can check by going to Run > External Tools > External Tools Configurations... and looking on the left of the window that pops up) and deleting any ones that have already been set. 
 
-  1. Go to File > Import... > select Launch Configurations under Run/Debug > check off the 'Overclocked-Swerve' directory on the left (you should see two configuration files checked off on the right) > Finish. 
+  1. Go to File > Import... > select Launch Configurations under Run/Debug > check off the 'OverclockedSwerve' directory on the left (you should see two configuration files checked off on the right) > Finish. 
   **Note:** you may notice that running `git status` after this step reveals that the two configuration files you just imported were deleted - this is completely normal, but be sure to run `git stash` in order to restore these files. 
 
   1. Right-click on the build.xml file in the OverclockedSwerve directory in the package explorer, select Run As > 1 Ant Build (the first option on the list). 
