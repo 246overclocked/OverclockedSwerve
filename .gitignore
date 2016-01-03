@@ -21,8 +21,10 @@ local.properties
 # External tool builders
 .externalToolBuilders/
 
-# Locally stored "Eclipse launch configurations"
+# Locally stored "Eclipse launch configurations" except our custom ones
 *.launch
+!OverclockedSwerve/OverclockedSwerve_build.xml.launch
+!OverclockedSwerve/OverclockedSwerve_test.xml.launch
 
 # CDT-specific
 .cproject
