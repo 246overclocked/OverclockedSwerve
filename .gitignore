@@ -23,8 +23,8 @@ local.properties
 
 # Locally stored "Eclipse launch configurations" except our custom ones
 *.launch
-!OverclockedSwerve/OverclockedSwerve_build.xml.launch
-!OverclockedSwerve/OverclockedSwerve_test.xml.launch
+!OverclockedSwerve_build.xml.launch
+!OverclockedSwerve_test.xml.launch
 
 # CDT-specific
 .cproject
@@ -63,4 +63,4 @@ local.properties
 hs_err_pid*
 
 # Except everything in OverclockedSwerve/lib
-!OverclockedSwerve/lib/**/*
+!lib/**/*
