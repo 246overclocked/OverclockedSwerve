@@ -55,7 +55,7 @@ first letter capitalized, e.g. "Add abz" or "Fix bla" instead of
 writing there in whatever tense you find easiest.
 
 Each time you push your code, your code gets compiled and tested by
-[Travis](https://travis-ci.com/246overclocked/OverclockedSwerve). Although you
+[Travis](https://travis-ci.org/246overclocked/Overclocked-Swerve). Although you
 should be [testing on your local machine as you develop](#make-sure-your-code-is-ready),
 this is another good way to make sure you don't break anything.
 
