@@ -1,5 +1,5 @@
 # OverclockedSwerve
-[![Build Status](https://travis-ci.org/246overclocked/OverclockedSwerve.svg)](https://travis-ci.org/246overclocked/OverclockedSwerve)
+[![Build Status](https://travis-ci.org/246overclocked/OverclockedSwerve.svg?branch=master)](https://travis-ci.org/246overclocked/OverclockedSwerve)
 [![Stories in Ready](https://badge.waffle.io/246overclocked/OverclockedSwerve.svg?label=ready&title=Ready)](http://waffle.io/246overclocked/OverclockedSwerve)
 
 A clean version of our swerve drive code designed to be easily integrated into a new project.
