@@ -1,6 +1,6 @@
 # OverclockedSwerve
-[![Build Status](https://travis-ci.com/246overclocked/dodgeball.svg?token=2FpVbKW7VbxCXxGx8Yi3&branch=master)](https://travis-ci.com/246overclocked/dodgeball)
-[![Stories in Ready](https://badge.waffle.io/246overclocked/dodgeball.svg?label=ready&title=Ready)](https://waffle.io/246overclocked/dodgeball)
+[![Build Status](https://travis-ci.org/246overclocked/OverclockedSwerve.svg)](https://travis-ci.org/246overclocked/OverclockedSwerve)
+[![Stories in Ready](https://badge.waffle.io/246overclocked/OverclockedSwerve.svg?label=ready&title=Ready)](http://waffle.io/246overclocked/OverclockedSwerve)
 
 A clean version of our swerve drive code designed to be easily integrated into a new project.
 
