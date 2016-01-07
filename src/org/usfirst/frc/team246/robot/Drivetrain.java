@@ -212,6 +212,18 @@ public class Drivetrain extends Subsystem {
             swerves[i].stopUnwinding();
         }
     }
+    
+    public boolean isUnwound()
+    {
+    	for(int i=0; i<swerves.length; i++)
+    	{
+    		if(swerves[i].getAngle() > 5)
+    		{
+    			return false;
+    		}
+    	}
+    	return true;
+    }
      
     public boolean isOverRotated()
     {
