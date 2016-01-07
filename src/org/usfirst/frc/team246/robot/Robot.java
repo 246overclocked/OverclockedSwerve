@@ -34,13 +34,12 @@ public class Robot extends IterativeRobot {
         };
     	
     	//We were having occasional errors with the creation of the nav6 object, so we make 5 attempts before allowing the error to go through and being forced to redeploy.
-        IMUAdvanced navX;
-    	int count = 0;
+        IMUAdvanced navX = new IMUAdvanced(new SerialPort(57600,SerialPort.Port.kMXP), (byte)50);;
+    	int count = 1;
         int maxTries = 5;
-        while(true) {
+        while(navX == null) {
             try {
                 navX = new IMUAdvanced(new SerialPort(57600,SerialPort.Port.kMXP), (byte)50);
-                if(navX != null) break;
             } catch (Exception e) {
                 if (++count == maxTries)
                 {
