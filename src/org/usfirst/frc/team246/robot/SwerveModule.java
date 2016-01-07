@@ -1,9 +1,12 @@
 package org.usfirst.frc.team246.robot;
 
 import org.usfirst.frc.team246.robot.Robot;
+import org.usfirst.frc.team246.robot.overclockedLibraries.Diagnostics;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -44,7 +47,15 @@ public class SwerveModule
         this.name = name;
         
         this.wheelMotor = wheelMotor;
-        this.moduleMotor = moduleMotor;
+        wheelMotor.changeControlMode(ControlMode.Speed);
+		wheelMotor.set(0);
+		LiveWindow.addActuator("Drivetrain", name + "WheelMotor", (LiveWindowSendable) wheelMotor);
+		Diagnostics.addSRXEncoder(wheelMotor, name + "Encoder");
+        
+		this.moduleMotor = moduleMotor;
+		moduleMotor.changeControlMode(ControlMode.Position);
+        LiveWindow.addActuator("Drivetrain", name + "ModuleMotor", (LiveWindowSendable) moduleMotor);
+		Diagnostics.addSRXPotentiometer(moduleMotor, name + "Potentiometer");
         
         this.maxSpeed = maxSpeed;
         this.maxAngle = maxAngle;
