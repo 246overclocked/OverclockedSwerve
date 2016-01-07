@@ -1,7 +1,7 @@
 package org.usfirst.frc.team246.robot;
 
 import org.usfirst.frc.team246.robot.Robot;
-import org.usfirst.frc.team246.robot.overclockedLibraries.Vector2D;
+import org.usfirst.frc.team246.robot.Vector2D;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -23,7 +23,7 @@ public class AutoDrive extends Command {
 
     protected void initialize() {
     	if (zero) Robot.drivetrain.odometry.resetLinearDiplacement();
-		Robot.drivetrain.setAccelerationRamping(true);
+		Robot.drivetrain.setAccelerationRamping(Robot.AUTONOMOUS_SPEED_RAMP_RATE);;
 		Robot.drivetrain.enableCrab(true);
 		Robot.drivetrain.enableTwist(true);
 		Robot.drivetrain.crabPID.setSetpoint(targetLocation);
@@ -39,7 +39,7 @@ public class AutoDrive extends Command {
     }
 
     protected void end() {
-    	Robot.drivetrain.setAccelerationRamping(false);
+    	Robot.drivetrain.setAccelerationRamping(Robot.TELEOP_SPEED_RAMP_RATE);
 		Robot.drivetrain.enableCrab(false);
 		Robot.drivetrain.enableTwist(false);
     }

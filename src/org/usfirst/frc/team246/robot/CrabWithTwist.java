@@ -5,13 +5,12 @@
  */
 package org.usfirst.frc.team246.robot;
 
-import org.usfirst.frc.team246.robot.overclockedLibraries.AlertMessage;
-import org.usfirst.frc.team246.robot.overclockedLibraries.UdpAlertService;
-import org.usfirst.frc.team246.robot.overclockedLibraries.Vector2D;
+import org.usfirst.frc.team246.robot.AlertMessage;
+import org.usfirst.frc.team246.robot.UdpAlertService;
+import org.usfirst.frc.team246.robot.Vector2D;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc.team246.robot.RobotMap;
 import org.usfirst.frc.team246.robot.Robot;
 
 /**
@@ -23,13 +22,13 @@ public class CrabWithTwist extends FieldCentricDrivingCommand{
 	boolean holdingHeading = false;
     
     protected Vector2D getCrabVector() {
-    	Vector2D v = new Vector2D(true, Robot.oi.driver.getLeftXAxis(), -Robot.oi.driver.getLeftYAxis());
+    	Vector2D v = new Vector2D(true, Robot.getCrabX(), -Robot.getCrabY());
     	if(v.getMagnitude() > 0)
     	{
-    		if(v.getMagnitude() < RobotMap.crabZeroZone) v.setMagnitude(0.0001);
+    		if(v.getMagnitude() < Robot.CRAB_ZERO_ZONE) v.setMagnitude(0.0001);
     		else 
     		{
-    			v.setMagnitude((v.getMagnitude() - RobotMap.crabZeroZone)*(1/(1 - RobotMap.crabZeroZone)));
+    			v.setMagnitude((v.getMagnitude() - Robot.CRAB_ZERO_ZONE)*(1/(1 - Robot.CRAB_ZERO_ZONE)));
     			v.setMagnitude(Math.pow(v.getMagnitude(), 3) + .01);
     		}
     	}
@@ -37,16 +36,12 @@ public class CrabWithTwist extends FieldCentricDrivingCommand{
     }
 
     protected double getSpinRate() {
-        if(Robot.test2)
-        {
-            return SmartDashboard.getNumber("spinRate", 0) / RobotMap.WHEEL_TOP_ABSOLUTE_SPEED;
-        }
-        return Math.pow(Robot.oi.driver.getRightXAxis(), 3);
+        return Math.pow(Robot.getSpin(), 3);
     }
 
     // return center of rotation
     protected Vector2D getCOR() {
-        return RobotMap.centerOfRobot;
+        return new Vector2D(true,0,0);
     }
 
     protected void initialize() {
@@ -58,7 +53,6 @@ public class CrabWithTwist extends FieldCentricDrivingCommand{
     }
 
     protected void end() {
-//        Robot.drivetrain.absoluteTwistPID.disable();
     }
 
     protected void interrupted() {

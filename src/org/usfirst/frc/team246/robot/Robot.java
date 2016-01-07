@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class Robot extends IterativeRobot {
 	
-	public Drivetrain drivetrain;
+	public static Drivetrain drivetrain;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -55,26 +55,29 @@ public class Robot extends IterativeRobot {
         
         drivetrain = new Drivetrain(swerves, navX, crabPIDConstants, twistPIDConstants);
     }
-
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-
-    }
-
-    /**
-     * This function is called periodically during operator control
-     */
-    public void teleopPeriodic() {
-        
-    }
     
-    /**
-     * This function is called periodically during test mode
-     */
-    public void testPeriodic() {
+    //A bunch of constants and methods to make the sample commands work
+    public static final double FAST_CRAB_SPEED = 12;
+    public static final double FAST_SPIN_SPEED = 14;
+    public static final double SLOW_CRAB_SPEED = 6;
+    public static final double SLOW_SPIN_SPEED = 8;
     
+    public static final double CRAB_ZERO_ZONE = .1;
+    
+    public static final double AUTONOMOUS_SPEED_RAMP_RATE = 3;
+    public static final double TELEOP_SPEED_RAMP_RATE = 12;
+    
+    public static double getCrabX()
+    {
+    	return 0;
+    }
+    public static double getCrabY()
+    {
+    	return 0;
+    }
+    public static double getSpin()
+    {
+    	return 0;
     }
     
 }

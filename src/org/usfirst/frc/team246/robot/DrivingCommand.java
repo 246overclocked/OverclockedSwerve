@@ -7,7 +7,6 @@ package org.usfirst.frc.team246.robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team246.robot.Robot;
-import org.usfirst.frc.team246.robot.overclockedLibraries.Vector2D;
 
 /**
  * An abstract subclass of CommandBase used as a basis for all other commands 

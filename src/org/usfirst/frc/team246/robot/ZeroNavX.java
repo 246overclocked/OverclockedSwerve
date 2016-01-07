@@ -1,7 +1,5 @@
 package org.usfirst.frc.team246.robot;
 
-import org.usfirst.frc.team246.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -17,7 +15,7 @@ public class ZeroNavX extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	RobotMap.navX.zeroYaw(offset);
+    	Robot.drivetrain.navX.zeroYaw(offset);
     }
 
     // Called repeatedly when this Command is scheduled to run

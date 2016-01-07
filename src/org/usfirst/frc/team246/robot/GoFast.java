@@ -1,9 +1,6 @@
 package org.usfirst.frc.team246.robot;
 
 import org.usfirst.frc.team246.robot.Robot;
-import org.usfirst.frc.team246.robot.RobotMap;
-import org.usfirst.frc.team246.robot.overclockedLibraries.AlertMessage;
-import org.usfirst.frc.team246.robot.overclockedLibraries.UdpAlertService;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -17,7 +14,7 @@ public class GoFast extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.setMaxSpeed(RobotMap.FAST_MAX_CRAB_SPEED, RobotMap.FAST_MAX_SPIN_SPEED);
+    	Robot.drivetrain.setMaxSpeed(Robot.FAST_CRAB_SPEED, Robot.FAST_SPIN_SPEED);
     	UdpAlertService.sendAlert(new AlertMessage("Going fast"));
     }
 
@@ -32,7 +29,7 @@ public class GoFast extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.setMaxSpeed(RobotMap.SLOW_MAX_CRAB_SPEED, RobotMap.SLOW_MAX_SPIN_SPEED);
+    	Robot.drivetrain.setMaxSpeed(Robot.SLOW_CRAB_SPEED, Robot.SLOW_SPIN_SPEED);
     	UdpAlertService.sendAlert(new AlertMessage("Slowing Down"));
     }
 
