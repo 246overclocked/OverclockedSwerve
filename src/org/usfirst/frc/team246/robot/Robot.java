@@ -2,8 +2,10 @@
 package org.usfirst.frc.team246.robot;
 
 import org.usfirst.frc.team246.nav6.IMUAdvanced;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.UdpAlertService;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,6 +20,8 @@ import edu.wpi.first.wpilibj.Timer;
 public class Robot extends IterativeRobot {
 	
 	public static Drivetrain drivetrain;
+	
+	public boolean alertServiceWasConnected = false;
 	
     /**
      * This function is run when the robot is first started up and should be
@@ -54,6 +58,14 @@ public class Robot extends IterativeRobot {
     	PIDConstants twistPIDConstants = new PIDConstants(1, 0, 0, 0, 20);
         
         drivetrain = new Drivetrain(swerves, navX, crabPIDConstants, twistPIDConstants);
+        
+        //Instantiate communication for our notifier service
+        if(DriverStation.getInstance().isDSAttached() && !alertServiceWasConnected)
+		{
+			System.out.print("Connected to driver station");
+			UdpAlertService.initialize("MSilver-PC.local", 5801);
+			alertServiceWasConnected = true;
+		}
     }
     
     //A bunch of constants and methods to make the sample commands work
