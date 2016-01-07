@@ -1,14 +1,7 @@
 package org.usfirst.frc.team246.robot;
 
+import org.usfirst.frc.team246.nav6.IMUAdvanced;
 import org.usfirst.frc.team246.robot.Robot;
-import org.usfirst.frc.team246.robot.RobotMap;
-import org.usfirst.frc.team246.robot.commands.CrabWithTwist;
-import org.usfirst.frc.team246.robot.overclockedLibraries.SwerveModule;
-import org.usfirst.frc.team246.robot.overclockedLibraries.Vector2D;
-import org.usfirst.frc.team246.robot.overclockedLibraries.VectorPIDController;
-import org.usfirst.frc.team246.robot.overclockedLibraries.VectorPIDOutput;
-import org.usfirst.frc.team246.robot.overclockedLibraries.VectorPIDSource;
-import org.usfirst.frc.team246.robot.subsystems.Drivetrain.DrivetrainPID;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -25,38 +18,31 @@ public class Drivetrain extends Subsystem {
     
 	//every SwerveModule object is referenced twice: once in the array and once in its own variable
     public SwerveModule[] swerves;
-    public SwerveModule frontModule;
-    public SwerveModule backModule;
-    public SwerveModule leftModule;
-    public SwerveModule rightModule;
+    public IMUAdvanced navX;
     
     public Odometry odometry;
     
     public double FOV = 0; //the front of the vehicle in degrees. May be used in different ways by different control schemes.
     
-    public double maxCrabSpeed = RobotMap.SLOW_MAX_CRAB_SPEED;
-    public double maxSpinSpeed = RobotMap.SLOW_MAX_SPIN_SPEED;
+    public double maxCrabSpeed;
+    public double maxSpinSpeed;
     
-    public Drivetrain()
+    public Drivetrain(SwerveModule[] swerves, IMUAdvanced navX, PIDConstants crabPIDConstants, PIDConstants twistPIDConstants)
     {
-    	frontModule = new SwerveModule(RobotMap.frontWheelMotor, RobotMap.frontModuleMotor, RobotMap.WHEEL_TOP_ABSOLUTE_SPEED, 0, RobotMap.FRONT_BACK_LENGTH/2, "frontModule");
-    	backModule = new SwerveModule(RobotMap.backWheelMotor, RobotMap.backModuleMotor, RobotMap.WHEEL_TOP_ABSOLUTE_SPEED, 0, -RobotMap.FRONT_BACK_LENGTH/2, "backModule");
-    	leftModule = new SwerveModule(RobotMap.leftWheelMotor, RobotMap.leftModuleMotor, RobotMap.WHEEL_TOP_ABSOLUTE_SPEED, -RobotMap.LEFT_RIGHT_WIDTH/2, 0, "leftModule");
-    	rightModule = new SwerveModule(RobotMap.rightWheelMotor, RobotMap.rightModuleMotor, RobotMap.WHEEL_TOP_ABSOLUTE_SPEED, RobotMap.LEFT_RIGHT_WIDTH/2, 0, "rightModule");
-    	swerves = new SwerveModule[4];
-    	swerves[0] = backModule;
-    	swerves[1] = leftModule;
-    	swerves[2] = rightModule;
-    	swerves[3] = frontModule;
+    	this.swerves = swerves;
+    	this.navX = navX;
+    	
+    	maxCrabSpeed = swerves[0].maxSpeed;
+    	maxSpinSpeed = swerves[0].maxSpeed;
     	
     	odometry = new Odometry();
-    	twistPID = new PIDController(RobotMap.ABSOLUTE_TWIST_kP, RobotMap.ABSOLUTE_TWIST_kI, RobotMap.ABSOLUTE_TWIST_kD, RobotMap.navX, twistPIDOutput);
+    	twistPID = new PIDController(twistPIDConstants.kP, twistPIDConstants.kI, twistPIDConstants.kD, navX, twistPIDOutput, twistPIDConstants.period);
         twistPID.setInputRange(-180, 180);
         twistPID.setOutputRange(-1, 1);
         twistPID.setContinuous();
         twistPID.setAbsoluteTolerance(1);
         
-        crabPID = new VectorPIDController(RobotMap.ABSOLUTE_CRAB_kP, RobotMap.ABSOLUTE_CRAB_kI, RobotMap.ABSOLUTE_CRAB_kD, odometry, crabPIDOutput);
+        crabPID = new VectorPIDController(crabPIDConstants.kP, crabPIDConstants.kI, crabPIDConstants.kD, crabPIDConstants.kF, odometry, crabPIDOutput, crabPIDConstants.period);
         crabPID.setOutputRange(-1, 1);
         crabPID.setAbsoluteTolerance(.2);
         
@@ -174,7 +160,7 @@ public class Drivetrain extends Subsystem {
     
     public double getFieldCentricHeading() //returns the direction of the robot relative to the direction the driver is facing.
     {
-        return RobotMap.navX.getYaw();
+        return navX.getYaw();
     }
     
     public void setAccelerationRamping(boolean on)
@@ -183,23 +169,6 @@ public class Drivetrain extends Subsystem {
     	{
     		swerves[i].accelerationControl = on;
     	}
-    }
-    
-    double lastTimeWasMoving = Long.MAX_VALUE;
-    public boolean isMoving()
-    {
-    	return !Robot.oi.driver.getA().get();
-    	/*
-        if(RobotMap.navX.isMoving())
-        {
-            return Timer.getFPGATimestamp() - lastTimeWasMoving > .5;
-        }
-        else
-        {
-            lastTimeWasMoving = Timer.getFPGATimestamp();
-            return false;
-        }
-        */
     }
     
     public void PIDOn(boolean on)
@@ -242,7 +211,7 @@ public class Drivetrain extends Subsystem {
     {
     	for(int i=0; i<swerves.length; i++)
         {
-            if(swerves[i].getModuleAngle() > RobotMap.MAX_MODULE_ANGLE) return true;
+            if(swerves[i].getModuleAngle() > swerves[i].maxAngle) return true;
         }
         return false;
     }
@@ -334,7 +303,7 @@ public class Drivetrain extends Subsystem {
     	}
     	
     	public double getAngularDisplacement(){
-			return RobotMap.navX.getYaw();
+			return navX.getYaw();
 		}
     	
 //    	RESET ODOMETRY:
@@ -346,7 +315,7 @@ public class Drivetrain extends Subsystem {
     	private void setSwerveDisplacementVectors() {
     		for(int i=0; i<swerves.length; i++){
     			double dist = swerves[i].wheelMotor.getEncPosition();
-    			swervesDisplacementVectors[i] = new Vector2D(false, dist, swerves[i].getAngle()+ RobotMap.navX.getYaw());
+    			swervesDisplacementVectors[i] = new Vector2D(false, dist, swerves[i].getAngle()+ navX.getYaw());
     			swerves[i].resetWheelEncoder();
     		}
 		}
