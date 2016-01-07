@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  * This is the heart of the swerve code. All vector calculations are done here.
@@ -31,6 +32,7 @@ public class Drivetrain extends Subsystem {
     {
     	this.swerves = swerves;
     	this.navX = navX;
+    	LiveWindow.addSensor("Drivetrain", "Gyro", navX);
     	
     	maxCrabSpeed = swerves[0].maxSpeed;
     	maxSpinSpeed = swerves[0].maxSpeed;
