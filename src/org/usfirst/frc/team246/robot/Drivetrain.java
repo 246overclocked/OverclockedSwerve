@@ -163,11 +163,11 @@ public class Drivetrain extends Subsystem {
         return navX.getYaw();
     }
     
-    public void setAccelerationRamping(boolean on)
+    public void setAccelerationRamping(double rampRate)
     {
     	for(int i = 0; i < swerves.length; i++)
     	{
-    		swerves[i].accelerationControl = on;
+    		swerves[i].setSpeedRampRate(rampRate);;
     	}
     }
     
