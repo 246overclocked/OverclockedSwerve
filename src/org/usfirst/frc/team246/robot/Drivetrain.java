@@ -6,6 +6,7 @@ import org.usfirst.frc.team246.robot.OverclockedLibraries.VectorPIDController;
 import org.usfirst.frc.team246.robot.OverclockedLibraries.VectorPIDOutput;
 import org.usfirst.frc.team246.robot.OverclockedLibraries.VectorPIDSource;
 import org.usfirst.frc.team246.robot.commands.CrabWithTwist;
+import org.usfirst.frc.team246.robot.commands.SteeringWatchdog;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -51,6 +52,8 @@ public class Drivetrain extends Subsystem {
         crabPID = new VectorPIDController(crabPIDConstants.kP, crabPIDConstants.kI, crabPIDConstants.kD, crabPIDConstants.kF, odometry, crabPIDOutput, crabPIDConstants.period);
         crabPID.setOutputRange(-1, 1);
         crabPID.setAbsoluteTolerance(.2);
+        
+        (new SteeringWatchdog()).start();
         
         (new Thread(odometry)).start();
     }
