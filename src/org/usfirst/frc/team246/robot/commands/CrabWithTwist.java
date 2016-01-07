@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.usfirst.frc.team246.robot;
+package org.usfirst.frc.team246.robot.commands;
 
-import org.usfirst.frc.team246.robot.AlertMessage;
-import org.usfirst.frc.team246.robot.UdpAlertService;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.AlertMessage;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.UdpAlertService;
 import org.usfirst.frc.team246.robot.Vector2D;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

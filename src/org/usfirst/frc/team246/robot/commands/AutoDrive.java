@@ -1,4 +1,4 @@
-package org.usfirst.frc.team246.robot;
+package org.usfirst.frc.team246.robot.commands;
 
 import org.usfirst.frc.team246.robot.Robot;
 import org.usfirst.frc.team246.robot.Vector2D;

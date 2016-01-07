@@ -1,7 +1,7 @@
 package org.usfirst.frc.team246.robot;
 
 import org.usfirst.frc.team246.robot.Robot;
-import org.usfirst.frc.team246.robot.Diagnostics;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.Diagnostics;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;

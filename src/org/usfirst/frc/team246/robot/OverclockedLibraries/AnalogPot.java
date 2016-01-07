@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-package org.usfirst.frc.team246.robot;
+package org.usfirst.frc.team246.robot.OverclockedLibraries;
 
 import edu.wpi.first.wpilibj.ControllerPower;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;

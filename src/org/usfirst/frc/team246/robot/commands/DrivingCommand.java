@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.usfirst.frc.team246.robot;
+package org.usfirst.frc.team246.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team246.robot.Robot;
+import org.usfirst.frc.team246.robot.Vector2D;
 
 /**
  * An abstract subclass of CommandBase used as a basis for all other commands 
