@@ -9,15 +9,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class GoFast extends Command {
+public class GoSlow extends Command {
 
-    public GoFast() {
+    public GoSlow() {
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivetrain.setMaxSpeed(Robot.FAST_CRAB_SPEED, Robot.FAST_SPIN_SPEED);
-    	UdpAlertService.sendAlert(new AlertMessage("Going fast"));
+    	Robot.drivetrain.setMaxSpeed(Robot.SLOW_CRAB_SPEED, Robot.SLOW_SPIN_SPEED);
+    	UdpAlertService.sendAlert(new AlertMessage("Slowing Down"));
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -31,7 +31,7 @@ public class GoFast extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-
+    	
     }
 
     // Called when another command which requires one or more of the same
