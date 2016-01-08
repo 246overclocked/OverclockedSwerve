@@ -2,7 +2,7 @@ package org.usfirst.frc.team246.robot.OverclockedLibraries;
 
 import java.util.ArrayList;
 
-import org.usfirst.frc.team246.robot.CANTalonPotentiometer;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.CANTalonPotentiometer;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;

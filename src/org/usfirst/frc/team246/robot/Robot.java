@@ -3,6 +3,8 @@ package org.usfirst.frc.team246.robot;
 
 import org.usfirst.frc.team246.nav6.IMUAdvanced;
 import org.usfirst.frc.team246.robot.OverclockedLibraries.UdpAlertService;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.CANTalonPotentiometer;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.PIDConstants;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team246.robot.OverclockedLibraries;
 
-import org.usfirst.frc.team246.robot.Vector2D;
-
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;

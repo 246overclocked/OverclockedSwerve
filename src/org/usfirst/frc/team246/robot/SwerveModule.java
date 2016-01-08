@@ -2,12 +2,13 @@ package org.usfirst.frc.team246.robot;
 
 import org.usfirst.frc.team246.robot.Robot;
 import org.usfirst.frc.team246.robot.OverclockedLibraries.Diagnostics;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.CANTalonPotentiometer;
+import org.usfirst.frc.team246.robot.OverclockedLibraries.PIDConstants;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
