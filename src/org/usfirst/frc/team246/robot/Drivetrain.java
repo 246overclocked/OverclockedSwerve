@@ -32,8 +32,8 @@ public class Drivetrain extends Subsystem {
     
     public double FOV = 0; //the front of the vehicle in degrees. May be used in different ways by different control schemes.
     
-    public double maxCrabSpeed;
-    public double maxSpinSpeed;
+    public double maxCrabSpeed; //In feet per second
+    public double maxSpinSpeed; //Based of the speed, in feet per second, of the farthest wheel from the center
     
     public Drivetrain(SwerveModule[] swerves, IMUAdvanced navX, PIDConstants crabPIDConstants, PIDConstants twistPIDConstants)
     {
@@ -47,12 +47,12 @@ public class Drivetrain extends Subsystem {
     	odometry = new Odometry();
     	twistPID = new PIDController(twistPIDConstants.kP, twistPIDConstants.kI, twistPIDConstants.kD, navX, twistPIDOutput, twistPIDConstants.period);
         twistPID.setInputRange(-180, 180);
-        twistPID.setOutputRange(-1, 1);
+        twistPID.setOutputRange(-maxSpinSpeed, maxSpinSpeed);
         twistPID.setContinuous();
         twistPID.setAbsoluteTolerance(1);
         
         crabPID = new VectorPIDController(crabPIDConstants.kP, crabPIDConstants.kI, crabPIDConstants.kD, crabPIDConstants.kF, odometry, crabPIDOutput, crabPIDConstants.period);
-        crabPID.setOutputRange(-1, 1);
+        crabPID.setOutputRange(-maxCrabSpeed, maxCrabSpeed);
         crabPID.setAbsoluteTolerance(.2);
         
         (new SteeringWatchdog()).start();
@@ -104,28 +104,23 @@ public class Drivetrain extends Subsystem {
             }
         }
         
-//        rotate the moduleLocations vectors -90 degrees.
+//        rotate the moduleLocations vectors 90 degrees.
         Vector2D[] moduleSetpoints = new Vector2D[swerves.length];
         for(int i=0; i<moduleSetpoints.length; i++){
-            moduleSetpoints[i] = new Vector2D(true, moduleLocations[i].getY(), -moduleLocations[i].getX());
+            moduleSetpoints[i] = moduleLocations[i].cloneVector();
+            moduleSetpoints[i].setAngle(moduleSetpoints[i].getAngle() + 90);
             moduleSetpoints[i].setMagnitude(rate*moduleDists[i]/moduleDists[farthestModule]); //The furthest module should move at the same speed as the rate, and all of the other ones should scale directly porportionally to it based on the ratio of their distances to the center of rotation.
         }
         return moduleSetpoints;
     }
     
-    //The primary driving method. Adds the crab and snake vectors together, allowing the robot to drive in any direction while rotating at the same time.
+    //The primary driving method. Adds the crab and snake vectors together, allowing the robot to drive in any direction while rotating at the same time. 
+    //speed and spinRate are in feet per second
     public void drive(double speed, double direction, double spinRate, double corX, double corY)
     {
         Vector2D[] moduleSetpoints = new Vector2D[swerves.length];
         Vector2D[] crab = crab(direction, speed);
         Vector2D[] snake = snake(spinRate, corX, corY);
-        
-        //Scale the crab and snake vectors according to the max speeds
-        for(int i = 0; i < moduleSetpoints.length; i++)
-        {
-        	crab[i].setMagnitude(crab[i].getMagnitude() * (maxCrabSpeed/swerves[i].maxSpeed));
-        	snake[i].setMagnitude(snake[i].getMagnitude() * (maxSpinSpeed/swerves[i].maxSpeed));
-        }
         
         //Add together the crab and snake vectors. Also find which wheel will be spinning the fastest.
         double largestVector = 0;
@@ -135,12 +130,22 @@ public class Drivetrain extends Subsystem {
         }
         
         //normalize the vectors so that none of them have a magnitude greater than 1
-        if(largestVector > 1)
+        if(largestVector > swerves[0].maxSpeed)
         {
             for(int i = 0; i < moduleSetpoints.length; i++)
             {
                 moduleSetpoints[i].setMagnitude(moduleSetpoints[i].getMagnitude() / largestVector);
             }
+        }
+        
+      //Scale the crab and snake vectors back to between 1 and -1 if the module is in gasMode
+        for(int i = 0; i < moduleSetpoints.length; i++)
+        {
+        	if(swerves[i].gasMode)
+        	{
+        		crab[i].setMagnitude(crab[i].getMagnitude() / maxCrabSpeed);
+        		snake[i].setMagnitude(snake[i].getMagnitude() / maxSpinSpeed);
+        	}
         }
         
         for(int i=0; i < swerves.length; i++)
@@ -151,6 +156,12 @@ public class Drivetrain extends Subsystem {
         	}
         	swerves[i].setWheelSpeed(moduleSetpoints[i].getMagnitude());
         }
+    }
+    
+    //Takes drive() parameters with magnitudes between -1 and 1 and scales them to the max speed
+    public void teleopDrive(double speed, double direction, double spinRate, double corX, double corY)
+    {
+    	drive(speed * maxCrabSpeed, direction, spinRate * maxSpinSpeed, corX, corY);
     }
     
     public void setMaxSpeed(double maxCrabSpeed, double maxSpinSpeed)
@@ -253,7 +264,7 @@ public class Drivetrain extends Subsystem {
     private class TwistPIDOutput implements PIDOutput
     {   
         public void pidWrite(double output) {
-        	drivetrainPID.setTwist(-output); // TODO deal with scaling later
+        	drivetrainPID.setTwist(-output);
         }
     }
 

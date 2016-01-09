@@ -148,12 +148,13 @@ public class SwerveModule
         }
     }
     
+    //Speed is between -1 and 1 for gasMode, in feet per second if not in gasMode
     public void setWheelSpeed(double speed){
         if(invertSpeed) speed = -speed;
         if(!gasMode)
         {
         	wheelMotor.changeControlMode(ControlMode.Speed);
-            wheelMotor.set(speed*maxSpeed);
+            wheelMotor.set(speed);
         }
         else
         {

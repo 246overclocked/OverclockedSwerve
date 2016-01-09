@@ -21,6 +21,7 @@ public class CrabWithTwist extends FieldCentricDrivingCommand{
 	
 	boolean holdingHeading = false;
     
+	//Should return a vector with a magnitude between -1 and 1. This will be scaled to the set max speed later.
     protected Vector2D getCrabVector() {
     	Vector2D v = new Vector2D(true, Robot.getCrabX(), -Robot.getCrabY());
     	if(v.getMagnitude() > 0)
@@ -34,7 +35,8 @@ public class CrabWithTwist extends FieldCentricDrivingCommand{
     	}
         return v;
     }
-
+    
+    //Should return a vector with a magnitude between -1 and 1. This will be scaled to the set max speed later.
     protected double getSpinRate() {
         return Math.pow(Robot.getSpin(), 3);
     }

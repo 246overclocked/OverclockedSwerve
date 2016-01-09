@@ -15,6 +15,7 @@ public class AutoDrive extends Command {
     private boolean zero;
     private double targetHeading;
 	
+    //Target location is in feet
 	public AutoDrive(Vector2D targetLocation, double targetHeading, boolean zeroOdometry) {
     	this.targetLocation = targetLocation;
     	zero = zeroOdometry;
@@ -31,7 +32,8 @@ public class AutoDrive extends Command {
     }
 
     protected void execute() {
-    	
+    	Robot.drivetrain.crabPID.setOutputRange(-Robot.drivetrain.maxCrabSpeed, Robot.drivetrain.maxCrabSpeed);
+    	Robot.drivetrain.twistPID.setOutputRange(-Robot.drivetrain.maxSpinSpeed, Robot.drivetrain.maxSpinSpeed);
     }
 
     protected boolean isFinished() {
