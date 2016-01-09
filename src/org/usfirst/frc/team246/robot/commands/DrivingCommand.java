@@ -30,7 +30,7 @@ public abstract class DrivingCommand extends Command {
         crabVector.setMagnitude(crabVector.getMagnitude());
         Vector2D COR = getCOR();
         
-        Robot.drivetrain.scaleThenDrive(crabVector.getMagnitude(), crabVector.getAngle(), getSpinRate(), COR.getX(), COR.getY());
+        Robot.drivetrain.teleopDrive(crabVector.getMagnitude(), crabVector.getAngle(), getSpinRate(), COR.getX(), COR.getY());
     }
     
     // use these to set the parameters of drivetrain.drive(). The results will be automatically adjusted to be relative to the FOV

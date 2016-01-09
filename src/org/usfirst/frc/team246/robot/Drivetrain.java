@@ -159,7 +159,7 @@ public class Drivetrain extends Subsystem {
     }
     
     //Takes drive() parameters with magnitudes between -1 and 1 and scales them to the max speed
-    public void scaleThenDrive(double speed, double direction, double spinRate, double corX, double corY)
+    public void teleopDrive(double speed, double direction, double spinRate, double corX, double corY)
     {
     	drive(speed * maxCrabSpeed, direction, spinRate * maxSpinSpeed, corX, corY);
     }
