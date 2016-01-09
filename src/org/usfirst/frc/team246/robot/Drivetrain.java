@@ -47,12 +47,12 @@ public class Drivetrain extends Subsystem {
     	odometry = new Odometry();
     	twistPID = new PIDController(twistPIDConstants.kP, twistPIDConstants.kI, twistPIDConstants.kD, navX, twistPIDOutput, twistPIDConstants.period);
         twistPID.setInputRange(-180, 180);
-        twistPID.setOutputRange(-1, 1);
+        twistPID.setOutputRange(-maxSpinSpeed, maxSpinSpeed);
         twistPID.setContinuous();
         twistPID.setAbsoluteTolerance(1);
         
         crabPID = new VectorPIDController(crabPIDConstants.kP, crabPIDConstants.kI, crabPIDConstants.kD, crabPIDConstants.kF, odometry, crabPIDOutput, crabPIDConstants.period);
-        crabPID.setOutputRange(-1, 1);
+        crabPID.setOutputRange(-maxCrabSpeed, maxCrabSpeed);
         crabPID.setAbsoluteTolerance(.2);
         
         (new SteeringWatchdog()).start();
@@ -104,10 +104,10 @@ public class Drivetrain extends Subsystem {
             }
         }
         
-//        rotate the moduleLocations vectors -90 degrees.
+//        rotate the moduleLocations vectors 90 degrees.
         Vector2D[] moduleSetpoints = new Vector2D[swerves.length];
         for(int i=0; i<moduleSetpoints.length; i++){
-            moduleSetpoints[i] = new Vector2D(true, moduleLocations[i].getY(), -moduleLocations[i].getX());
+            moduleSetpoints[i] = new Vector2D(true, -moduleLocations[i].getY(), moduleLocations[i].getX());
             moduleSetpoints[i].setMagnitude(rate*moduleDists[i]/moduleDists[farthestModule]); //The furthest module should move at the same speed as the rate, and all of the other ones should scale directly porportionally to it based on the ratio of their distances to the center of rotation.
         }
         return moduleSetpoints;
@@ -263,7 +263,7 @@ public class Drivetrain extends Subsystem {
     private class TwistPIDOutput implements PIDOutput
     {   
         public void pidWrite(double output) {
-        	drivetrainPID.setTwist(-output); // TODO deal with scaling later
+        	drivetrainPID.setTwist(output);
         }
     }
 
