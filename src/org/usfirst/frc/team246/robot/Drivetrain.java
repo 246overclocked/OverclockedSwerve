@@ -32,8 +32,8 @@ public class Drivetrain extends Subsystem {
     
     public double FOV = 0; //the front of the vehicle in degrees. May be used in different ways by different control schemes.
     
-    public double maxCrabSpeed;
-    public double maxSpinSpeed;
+    public double maxCrabSpeed; //In feet per second
+    public double maxSpinSpeed; //Based of the speed, in feet per second, of the farthest wheel from the center
     
     public Drivetrain(SwerveModule[] swerves, IMUAdvanced navX, PIDConstants crabPIDConstants, PIDConstants twistPIDConstants)
     {
@@ -113,18 +113,22 @@ public class Drivetrain extends Subsystem {
         return moduleSetpoints;
     }
     
-    //The primary driving method. Adds the crab and snake vectors together, allowing the robot to drive in any direction while rotating at the same time.
+    //The primary driving method. Adds the crab and snake vectors together, allowing the robot to drive in any direction while rotating at the same time. 
+    //speed and spinRate are in feet per second
     public void drive(double speed, double direction, double spinRate, double corX, double corY)
     {
         Vector2D[] moduleSetpoints = new Vector2D[swerves.length];
         Vector2D[] crab = crab(direction, speed);
         Vector2D[] snake = snake(spinRate, corX, corY);
         
-        //Scale the crab and snake vectors according to the max speeds
+        //Scale the crab and snake vectors back to between 1 and -1 if the module is in gasMode
         for(int i = 0; i < moduleSetpoints.length; i++)
         {
-        	crab[i].setMagnitude(crab[i].getMagnitude() * (maxCrabSpeed/swerves[i].maxSpeed));
-        	snake[i].setMagnitude(snake[i].getMagnitude() * (maxSpinSpeed/swerves[i].maxSpeed));
+        	if(swerves[i].gasMode)
+        	{
+        		crab[i].setMagnitude(crab[i].getMagnitude() / maxCrabSpeed);
+        		snake[i].setMagnitude(snake[i].getMagnitude() / maxSpinSpeed);
+        	}
         }
         
         //Add together the crab and snake vectors. Also find which wheel will be spinning the fastest.
@@ -151,6 +155,12 @@ public class Drivetrain extends Subsystem {
         	}
         	swerves[i].setWheelSpeed(moduleSetpoints[i].getMagnitude());
         }
+    }
+    
+    //Takes drive() parameters with magnitudes between -1 and 1 and scales them to the max speed
+    public void scaleThenDrive(double speed, double direction, double spinRate, double corX, double corY)
+    {
+    	drive(speed * maxCrabSpeed, direction, spinRate * maxSpinSpeed, corX, corY);
     }
     
     public void setMaxSpeed(double maxCrabSpeed, double maxSpinSpeed)
