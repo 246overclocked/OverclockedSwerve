@@ -107,7 +107,8 @@ public class Drivetrain extends Subsystem {
 //        rotate the moduleLocations vectors 90 degrees.
         Vector2D[] moduleSetpoints = new Vector2D[swerves.length];
         for(int i=0; i<moduleSetpoints.length; i++){
-            moduleSetpoints[i] = new Vector2D(true, -moduleLocations[i].getY(), moduleLocations[i].getX());
+            moduleSetpoints[i] = moduleLocations[i].cloneVector();
+            moduleSetpoints[i].setAngle(moduleSetpoints[i].getAngle() + 90);
             moduleSetpoints[i].setMagnitude(rate*moduleDists[i]/moduleDists[farthestModule]); //The furthest module should move at the same speed as the rate, and all of the other ones should scale directly porportionally to it based on the ratio of their distances to the center of rotation.
         }
         return moduleSetpoints;
@@ -263,7 +264,7 @@ public class Drivetrain extends Subsystem {
     private class TwistPIDOutput implements PIDOutput
     {   
         public void pidWrite(double output) {
-        	drivetrainPID.setTwist(output);
+        	drivetrainPID.setTwist(-output);
         }
     }
 
