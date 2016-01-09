@@ -29,9 +29,8 @@ public class VectorPIDController {
 			
 			@Override
 			public double pidGet() {
-				return 0; 	//Making the input always zero means that error = setpoint. 
-							//We calculate the distance between the input and setpoint vectors in setSetpoint(), 
-							//and that becomes the error.
+				Vector2D d  = Vector2D.subtractVectors(setpoint, vectorSource.pidGet());
+				return -(d.getMagnitude());
 			}
 		};
 		PIDOutput regularOutput = new PIDOutput() {
@@ -66,8 +65,10 @@ public class VectorPIDController {
 	
 	public void setSetpoint(Vector2D setpoint) {
 		this.setpoint = setpoint;
-		Vector2D d = Vector2D.subtractVectors(vectorSource.pidGet(), setpoint);
-		PID.setSetpoint(d.getMagnitude());
+		PID.setSetpoint(0); 
+			//Making the setpoint always zero means that error = -input. 
+			//We calculate the distance between the input and setpoint vectors in regularSource.pidGet(), 
+			//and that becomes the error.
 	}
 	
 	public Vector2D getSetpoint() {
