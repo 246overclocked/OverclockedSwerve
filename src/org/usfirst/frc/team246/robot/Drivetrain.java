@@ -122,16 +122,6 @@ public class Drivetrain extends Subsystem {
         Vector2D[] crab = crab(direction, speed);
         Vector2D[] snake = snake(spinRate, corX, corY);
         
-        //Scale the crab and snake vectors back to between 1 and -1 if the module is in gasMode
-        for(int i = 0; i < moduleSetpoints.length; i++)
-        {
-        	if(swerves[i].gasMode)
-        	{
-        		crab[i].setMagnitude(crab[i].getMagnitude() / maxCrabSpeed);
-        		snake[i].setMagnitude(snake[i].getMagnitude() / maxSpinSpeed);
-        	}
-        }
-        
         //Add together the crab and snake vectors. Also find which wheel will be spinning the fastest.
         double largestVector = 0;
         for(int i=0; i<moduleSetpoints.length; i++){
@@ -140,12 +130,22 @@ public class Drivetrain extends Subsystem {
         }
         
         //normalize the vectors so that none of them have a magnitude greater than 1
-        if(largestVector > 1)
+        if(largestVector > swerves[0].maxSpeed)
         {
             for(int i = 0; i < moduleSetpoints.length; i++)
             {
                 moduleSetpoints[i].setMagnitude(moduleSetpoints[i].getMagnitude() / largestVector);
             }
+        }
+        
+      //Scale the crab and snake vectors back to between 1 and -1 if the module is in gasMode
+        for(int i = 0; i < moduleSetpoints.length; i++)
+        {
+        	if(swerves[i].gasMode)
+        	{
+        		crab[i].setMagnitude(crab[i].getMagnitude() / maxCrabSpeed);
+        		snake[i].setMagnitude(snake[i].getMagnitude() / maxSpinSpeed);
+        	}
         }
         
         for(int i=0; i < swerves.length; i++)
